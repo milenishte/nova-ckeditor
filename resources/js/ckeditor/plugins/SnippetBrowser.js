@@ -95,7 +95,7 @@ export default class SnippetBrowser {
      * @return void
      */
     writeContent(snippet) {
-        this.model.insertContent(this.data.toModel(this.data.processor.toView(`<div class="raw-html-embed">${snippet}</div>`)));
+        this.model.insertContent(this.data.toModel(this.data.processor.toView(`<div class="raw-html-embed-no">${snippet}</div>`)));
     }
 
     /**
