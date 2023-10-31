@@ -56,6 +56,7 @@ import ImageBrowser from './plugins/ImageBrowser'
 import VideoBrowser from './plugins/VideoBrowser'
 import AudioBrowser from './plugins/AudioBrowser'
 import SnippetBrowser from './plugins/SnippetBrowser'
+import FileBrowser from './plugins/FileBrowser'
 
 // Video
 import Video from "./plugins/video/video"
@@ -94,6 +95,7 @@ export default class CkEditor extends ClassicEditorBase {
             ImageBrowser,
             VideoBrowser,
             AudioBrowser,
+            FileBrowser,
             SnippetBrowser,
             Video,
             Audio,

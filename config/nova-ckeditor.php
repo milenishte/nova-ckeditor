@@ -151,6 +151,7 @@ return [
                 'imageBrowser',
                 'videoBrowser',
                 'audioBrowser',
+                'fileBrowser',
                 'mediaEmbed',
                 'link',
                 'resizeImage',
