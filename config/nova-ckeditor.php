@@ -132,6 +132,10 @@ return [
                 'audio' => true
             ],
 
+            'fileBrowserOptions' => [
+                'url' => '/some-file-manager',
+            ],
+
             'snippets' => [
                 ['name' => 'Image', 'html' => 'ckeditor.image'],
                 ['name' => 'Media', 'html' => 'ckeditor.media'],

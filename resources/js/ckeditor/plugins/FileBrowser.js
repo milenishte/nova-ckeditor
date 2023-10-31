@@ -7,6 +7,16 @@ export default class FileBrowser {
         this.model = editor.model;
         this.data = editor.data;
         this.ui = editor.ui;
+
+        /*
+        window.SetUrl = (items) => {
+          console.log(editor);
+        };
+        */
+    }
+
+    beforeDestroy() {
+        delete window.SetUrl;
     }
 
     /**
@@ -88,7 +98,17 @@ export default class FileBrowser {
      */
     openModal() {
         console.log("Opening file manager modal");
-        Nova.$emit(`ckeditor:file-manager:${this.attribute}`)
+        let height = (window.innerHeight || document.documentElement.clientHeight) * 0.9;
+        let width = (window.innerWidth || document.documentElement.clientWidth) * 0.9;
+
+        let options = this.config.get('fileBrowserOptions');
+        if(options && options.url) {
+            window.open(options.url, 'filemanager', 'menubar=no,width=' + width + ',height=' + height);
+        } else {
+            console.log('File Manager url not defined');
+        }
+        //Opens the file-browser.vue component
+        //Nova.$emit(`ckeditor:file-manager:${this.attribute}`)
     }
 
     /**

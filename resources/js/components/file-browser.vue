@@ -1,7 +1,7 @@
 <template>
     <modal v-model="isVisible" ref="modal" class="file-modal" :title="__('Files')" content-no-overflow>
         <div class="relative flex min-h-full bg-white max-h-full overflow-y-scroll">
-            AAAAAAAAAAAAAAAAAAAa
+            <iframe src="/laravel-filemanager" width="100%" :height="iframeHeight" frameborder="0"></iframe>
         </div>
 
         <template v-slot:footer>
@@ -30,6 +30,9 @@ export default {
         selected: null,
     }),
     computed: {
+        iframeHeight() {
+            return (window.innerHeight || document.documentElement.clientHeight) * 0.9;
+        },
         event() {
             return `ckeditor:file-manager:${this.fieldKey}`
         }

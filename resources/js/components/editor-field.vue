@@ -65,6 +65,7 @@ export default {
                 imageBrowser: this.currentField.imageBrowser,
                 videoBrowser: this.currentField.videoBrowser,
                 fileBrowser: this.currentField.fileBrowser,
+                fileBrowserOptions: this.currentField.fileBrowserOptions,
                 audioBrowser: this.currentField.audioBrowser,
                 snippetBrowser: this.currentField.snippetBrowser,
                 htmlSupport: this.normalizeHtmlSupportItems(this.currentField.htmlSupport),
