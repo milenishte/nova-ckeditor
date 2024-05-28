@@ -6,16 +6,19 @@
 * [Installation](getting-started/installation.md)
 * [Support Us](getting-started/support-us.md)
 * [License](getting-started/license.md)
+* [Demo](getting-started/license-1.md)
 
 ## 🚀 Basic Usage
 
 * [Usage](basic-usage/usage.md)
 * [Notes](basic-usage/notes.md)
 
-## ⚙ Advanced Usage
+## ⚙️ Advanced Usage
 
 * [Customize ImageStorage](advanced-usage/customize-imagestorage.md)
+* [Integrating NovaFileArtisan (Larupload) with Image Resource](advanced-usage/integrating-novafileartisan-larupload-with-image-resource.md)
 * [Customize AudioStorage](advanced-usage/customize-audiostorage.md)
+* [Customize FileStorage](advanced-usage/customize-audiostorage-1.md)
 * [Multiple Toolbars](advanced-usage/multiple-toolbars.md)
 * [Customize Toolbar Items](advanced-usage/customize-toolbar-items.md)
 * [Media Embed](advanced-usage/media-embed.md)
@@ -30,15 +33,18 @@
   * [Image Browser](advanced-usage/ckeditor-field-options/image-browser.md)
   * [Audio Browser](advanced-usage/ckeditor-field-options/audio-browser.md)
   * [Video Browser](advanced-usage/ckeditor-field-options/video-browser.md)
+  * [File Browser](advanced-usage/ckeditor-field-options/audio-browser-1.md)
   * [Snippets](advanced-usage/ckeditor-field-options/snippets.md)
 * [Configuration](advanced-usage/configuration/README.md)
   * [Video Model](advanced-usage/configuration/video-model.md)
+  * [Image Model](advanced-usage/configuration/image-model.md)
   * [Memory](advanced-usage/configuration/memory.md)
   * [Max Image Quality](advanced-usage/configuration/max-image-quality.md)
   * [Image Max Width](advanced-usage/configuration/image-max-width.md)
   * [Image Max Height](advanced-usage/configuration/image-max-height.md)
   * [Image Naming Method](advanced-usage/configuration/image-naming-method.md)
   * [Audio Naming Method](advanced-usage/configuration/audio-naming-method.md)
+  * [File Naming Method](advanced-usage/configuration/audio-naming-method-1.md)
   * [Toolbars](advanced-usage/configuration/toolbars/README.md)
     * [Defualt Toolbar](advanced-usage/configuration/toolbars/defualt-toolbar.md)
     * [Toolbar 1](advanced-usage/configuration/toolbars/toolbar-1/README.md)
@@ -55,6 +61,9 @@
       * [Image Browser](advanced-usage/configuration/toolbars/toolbar-1/image-browser.md)
       * [Audio Browser](advanced-usage/configuration/toolbars/toolbar-1/audio-browser.md)
       * [Video Browser](advanced-usage/configuration/toolbars/toolbar-1/video-browser.md)
+      * [File Browser](advanced-usage/configuration/toolbars/toolbar-1/audio-browser-1.md)
+      * [Insert Image Types](advanced-usage/configuration/toolbars/toolbar-1/insert-image-types.md)
+      * [Insert Image Size](advanced-usage/configuration/toolbars/toolbar-1/insert-image-size.md)
       * [Snippets](advanced-usage/configuration/toolbars/toolbar-1/snippets.md)
 
 ## ⚪ Other

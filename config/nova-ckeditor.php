@@ -1,4 +1,5 @@
 <?php
+
 return [
     /*
      |--------------------------------------------------------------------------
@@ -10,6 +11,17 @@ return [
      */
 
     'video-model' => 'App\Models\Video',
+
+    /*
+     |--------------------------------------------------------------------------
+     | Image Model
+     |--------------------------------------------------------------------------
+     |
+     | Specifies the path of your image model
+     |
+     */
+
+    'image-model' => 'App\Models\Image',
 
 
     /*
@@ -47,8 +59,8 @@ return [
      |
      */
 
-    'max-width'  => 1024,
-    'max-height' => 768,
+    'max-width'  => 1920,
+    'max-height' => 1080,
 
     /*
      |--------------------------------------------------------------------------
@@ -71,6 +83,17 @@ return [
      */
 
     'audio-naming-method' => 'hash-file',
+
+    /*
+     |--------------------------------------------------------------------------
+     | Naming Method of File
+     |--------------------------------------------------------------------------
+     |
+     | Available methods: hash-file, real-file-name, unique-real-file-name
+     |
+     */
+
+    'file-naming-method' => 'hash-file',
 
     /*
      |--------------------------------------------------------------------------
@@ -129,7 +152,19 @@ return [
             'browser' => [
                 'image' => true,
                 'video' => true,
-                'audio' => true
+                'audio' => true,
+                'file'  => true
+            ],
+
+            'image' => [
+                /*
+                 * Insert images directly into the editor by pasting or dragging.
+                 */
+
+                'insert' => [
+                    'types' => ['gif', 'png', 'jpg', 'jpeg', 'webp'],
+                    'size'  => 1500 // kb, nullable
+                ]
             ],
 
             'fileBrowserOptions' => [
@@ -152,13 +187,12 @@ return [
                 'fontBackgroundColor',
                 '|',
                 'insertTable',
-                'imageBrowser',
-                'videoBrowser',
-                'audioBrowser',
                 'fileBrowser',
+                //'mediaBrowser',
                 'mediaEmbed',
                 'link',
                 'resizeImage',
+                'insertImage',
                 '|',
                 'bold',
                 'italic',
@@ -429,7 +463,7 @@ return [
                     ],
 
                     'toolbar' => [
-                        'imageBrowser',
+                        'mediaBrowser',
                         '|',
                         'imageStyle:full',
                         'imageStyle:alignLeft',
@@ -448,6 +482,8 @@ return [
                         'resizeImage:50',
                         'resizeImage:75',
                         'resizeImage:original',
+                        '|',
+                        'insertImage',
                     ],
 
                     'styles' => [

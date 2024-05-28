@@ -6,6 +6,7 @@ use Laravel\Nova\Fields\Expandable;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\SupportsDependentFields;
 use Mostafaznv\Larupload\Traits\Larupload;
+use Mostafaznv\NovaVideo\Video;
 
 /**
  * @method static static make(mixed $name, string|\Closure|callable|object|null $attribute = null, callable|null $resolveCallback = null)
@@ -20,6 +21,13 @@ class CkEditor extends Field
      * @var string $component
      */
     public $component = 'ckeditor';
+
+    /**
+     * Specifies the toolbar name
+     *
+     * @var string $toolbarName
+     */
+    public string $toolbarName;
 
     /**
      * Specifies the available toolbar items
@@ -133,6 +141,13 @@ class CkEditor extends Field
      */
     public string $videoModel = '';
 
+    /**
+     * Specifies the path of your image model
+     *
+     * @var string
+     */
+    public string $imageModel = '';
+
 
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
     {
@@ -143,6 +158,7 @@ class CkEditor extends Field
         );
 
         $this->videoModel = config('nova-ckeditor.video-model');
+        $this->imageModel = config('nova-ckeditor.image-model', 'App\Models\Image');
     }
 
 
@@ -311,12 +327,14 @@ class CkEditor extends Field
     public function jsonSerialize(): array
     {
         return array_merge(parent::jsonSerialize(), [
+            'toolbarName'            => $this->toolbarName,
             'snippetBrowser'         => $this->snippetBrowser,
             'imageBrowser'           => $this->imageBrowser,
             'videoBrowser'           => $this->videoBrowser,
             'fileBrowser'            => $this->fileBrowser,
             'fileBrowserOptions'     => $this->fileBrowserOptions,
             'audioBrowser'           => $this->audioBrowser,
+            'fileBrowser'            => $this->fileBrowser,
             'toolbar'                => $this->toolbar,
             'toolbarOptions'         => $this->toolbarOptions,
             'height'                 => $this->height,
@@ -327,24 +345,9 @@ class CkEditor extends Field
             'uiLanguage'             => $this->uiLanguage,
             'shouldNotGroupWhenFull' => $this->shouldNotGroupWhenFull,
             'shouldShow'             => $this->shouldBeExpanded(),
-            'videoHasLaruploadTrait' => $this->hasLaruploadTrait(),
+            'videoHasLaruploadTrait' => $this->videoHasLaruploadTrait(),
+            'imageHasLaruploadTrait' => $this->imageHasLaruploadTrait()
         ]);
-    }
-
-    /**
-     * Check if class has larupload trait
-     *
-     * @return bool
-     */
-    protected function hasLaruploadTrait(): bool
-    {
-        if ($this->videoModel) {
-            $class = $this->videoModel;
-
-            return class_exists($class) and in_array(Larupload::class, class_uses($class));
-        }
-
-        return false;
     }
 
     /**
@@ -363,8 +366,49 @@ class CkEditor extends Field
         return $snippets;
     }
 
+    /**
+     * Check if image class has larupload trait
+     *
+     * @return bool
+     */
+    private function imageHasLaruploadTrait(): bool
+    {
+        if ($this->imageModel) {
+            return $this->hasLaruploadTrait($this->imageModel);
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if video class has larupload trait
+     *
+     * @return bool
+     */
+    private function videoHasLaruploadTrait(): bool
+    {
+        if ($this->videoModel) {
+            return $this->hasLaruploadTrait($this->videoModel);
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if class has larupload trait
+     *
+     * @param string $class
+     * @return bool
+     */
+    private function hasLaruploadTrait(string $class): bool
+    {
+        return class_exists($class) and in_array(Larupload::class, class_uses($class));
+    }
+
     private function prepareToolbar(string $toolbar, array $items = null): void
     {
+        $this->toolbarName = $toolbar;
+
         $toolbar = config('nova-ckeditor.toolbars.' . $toolbar);
 
         $defaultTextPartLanguage = [
@@ -385,6 +429,7 @@ class CkEditor extends Field
         $this->fileBrowser = $toolbar['browser']['file'] ?? true;
         $this->fileBrowserOptions = $toolbar['fileBrowserOptions'] ?? [];
         $this->audioBrowser = $toolbar['browser']['audio'] ?? true;
+        $this->fileBrowser = $toolbar['browser']['file'] ?? false;
         $this->snippetBrowser = $this->prepareSnippets($toolbar['snippets']);
         $this->contentLanguage = $toolbar['content-lang'];
         $this->textPartLanguage = $toolbar['text-part-language'] ?? $defaultTextPartLanguage;

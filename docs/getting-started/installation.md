@@ -2,9 +2,10 @@
 
 ### Requirements
 
-* PHP 8.0.2 or higher
-* Laravel 8.40.\* or higher
+* PHP 8.1 or higher
+* Laravel 9.\* or higher
 * Nova 4
+* GD or Imagick
 * FFMPEG (required for larupload usage)
 
 \
@@ -32,7 +33,7 @@ composer require mostafaznv/nova-ckeditor
 php artisan vendor:publish --provider="Mostafaznv\NovaCkEditor\FieldServiceProvider"
 ```
 
-#### 3. Prepare the migration and models
+#### 3. Prepare the migration, configurations and models
 
 After publishing stubs, essential `Image`, `Video` and `Audio` classes will be created in the `app/Models` and `app/Nova/Resources` directories respectively. These classes are used for the `media-picker` in the CKEditor field.
 

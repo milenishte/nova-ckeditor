@@ -16,11 +16,11 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.0.2",
-        "intervention/image": "^2.5",
-        "mostafaznv/nova-video": "^3.0|^4.0|^5.0",
-        "laravel/framework": "^8.40.0|^9.0|^10.0",
+        "php": "^8.1",
+        "intervention/image": "*",
+        "laravel/framework": "^10.0|^11.0",
         "laravel/nova": "^4.13",
+        "mostafaznv/nova-video": "*",
         "nova-kit/nova-packages-tool": "^1.2",
         "spatie/laravel-image-optimizer": "^1.6"
     },

@@ -2,11 +2,12 @@
 
 namespace Mostafaznv\NovaCkEditor;
 
-use Composer\InstalledVersions;
+use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Nova;
 use Illuminate\Support\Facades\App;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\ServiceProvider;
+
 
 class FieldServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,10 @@ class FieldServiceProvider extends ServiceProvider
 
         if (!$this->app->bound('ckeditor-audio-storage')) {
             $this->app->bind('ckeditor-audio-storage', AudioStorage::class);
+        }
+
+        if (!$this->app->bound('ckeditor-file-storage')) {
+            $this->app->bind('ckeditor-file-storage', FileStorage::class);
         }
 
         if ($this->app->runningInConsole()) {
@@ -43,12 +48,14 @@ class FieldServiceProvider extends ServiceProvider
                 Nova::script('field-ckeditor', __DIR__ . '/../dist/js/field.js');
             }
         });
+
+        $this->app->booted(function() {
+            $this->routes();
+        });
     }
 
     protected function publish(): void
     {
-        $videoStub = $this->isLegacy() ? 'Video.legacy.stub' : 'Video.stub';
-
         $this->publishes([
             __DIR__ . '/../config/nova-ckeditor.php' => config_path('nova-ckeditor.php')
         ], 'nova-ckeditor-config');
@@ -61,17 +68,31 @@ class FieldServiceProvider extends ServiceProvider
             __DIR__ . '/../stubs/migrations/2021_01_01_000000_create_images_table.stub' => database_path('migrations/2021_01_01_000000_create_images_table.php'),
             __DIR__ . '/../stubs/migrations/2021_01_01_000000_create_videos_table.stub' => database_path('migrations/2021_01_01_000000_create_videos_table.php'),
             __DIR__ . '/../stubs/migrations/2023_09_28_114516_create_audio_table.stub' => database_path('migrations/2023_09_28_114516_create_audio_table.php'),
+            __DIR__ . '/../stubs/migrations/2024_04_03_114516_create_files_table.stub' => database_path('migrations/2024_04_03_114516_create_files_table.php'),
 
             # models
             __DIR__ . '/../stubs/models/Image.stub' => app_path('Models/Image.php'),
-            __DIR__ . "/../stubs/models/$videoStub" => app_path('Models/Video.php'),
-            __DIR__ . "/../stubs/models/Audio.stub" => app_path('Models/Audio.php'),
+            __DIR__ . '/../stubs/models/Video.stub' => app_path('Models/Video.php'),
+            __DIR__ . '/../stubs/models/Audio.stub' => app_path('Models/Audio.php'),
+            __DIR__ . '/../stubs/models/File.stub' => app_path('Models/File.php'),
 
             # resources
             __DIR__ . '/../stubs/resources/Image.stub' => app_path('Nova/Resources/Image.php'),
             __DIR__ . '/../stubs/resources/Video.stub' => app_path('Nova/Resources/Video.php'),
-            __DIR__ . '/../stubs/resources/Audio.stub' => app_path('Nova/Resources/Audio.php')
+            __DIR__ . '/../stubs/resources/Audio.stub' => app_path('Nova/Resources/Audio.php'),
+            __DIR__ . '/../stubs/resources/File.stub' => app_path('Nova/Resources/File.php'),
         ], 'nova-ckeditor-stubs');
+    }
+
+    private function routes(): void
+    {
+        if ($this->app->routesAreCached()) {
+            return;
+        }
+
+        Route::middleware(['nova:api'])
+            ->prefix('nova-vendor/nova-ckeditor')
+            ->group(__DIR__ . '/../routes/api.php');
     }
 
     private function registerUiLanguageScripts(): void {
@@ -89,12 +110,5 @@ class FieldServiceProvider extends ServiceProvider
         foreach ($scripts as $script) {
             Nova::script('ckeditor-lang', $script);
         }
-    }
-
-    private function isLegacy(): bool
-    {
-        $larupload = InstalledVersions::getVersion('mostafaznv/larupload');
-
-        return version_compare($larupload, '1.0.0', '<');
     }
 }

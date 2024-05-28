@@ -7,6 +7,7 @@ use Mostafaznv\Larupload\Traits\Larupload;
 use Mostafaznv\NovaVideo\Video;
 use Exception;
 
+
 class VideoUpload extends Video
 {
     /**
@@ -19,15 +20,11 @@ class VideoUpload extends Video
      */
     public function __construct(string $label, string $fieldName, string $disk = 'video')
     {
+        parent::__construct($label, $fieldName, $disk);
+
         if ($this->hasLaruploadTrait()) {
-            parent::__construct($label, $fieldName . '_field', $disk);
-
-            $this->storeWithLarupload($fieldName);
+            $this->storeWithLarupload();
         }
-        else {
-            parent::__construct($label, $fieldName, $disk);
-        }
-
 
         $this->deletable(NovaRequest::capture()->isCreateOrAttachRequest());
         $this->prunable();

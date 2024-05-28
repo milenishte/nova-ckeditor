@@ -5,21 +5,35 @@
 
             <p v-if="currentField.helpText" v-html="currentField.helpText" class="help-text help-text mt-2" />
 
-            <media-browser @select="$options[editorName].execute('imageBrowser', $event)" type="image" :field-key="$options[editorUUID] + '-image'" :multiple="true" />
-            <media-browser @select="$options[editorName].execute('videoBrowser', $event)" type="video" :field-key="$options[editorUUID] + '-video'" :multiple="true" :has-larupload-trait="currentField.videoHasLaruploadTrait" />
-            <media-browser @select="$options[editorName].execute('audioBrowser', $event)" type="audio" :field-key="$options[editorUUID] + '-audio'" :multiple="true" />
-            <snippet-browser :field-key="$options[editorUUID]" :snippets="currentField.snippetBrowser" />
             <file-browser :field-key="$options[editorUUID]" />
+            <!--
+            <media-browser
+                @select="$options[editorName].execute('mediaBrowser', $event)"
+                :field-key="$options[editorUUID] + '-media-browser'"
+                :image-has-larupload-trait="currentField.imageHasLaruploadTrait"
+                :video-has-larupload-trait="currentField.videoHasLaruploadTrait"
+                :has-image-picker="currentField.imageBrowser"
+                :has-video-picker="currentField.videoBrowser"
+                :has-audio-picker="currentField.audioBrowser"
+                :has-file-picker="currentField.fileBrowser"
+                :multiple="true"
+            />
+            -->
+
+            <snippet-browser
+                :field-key="$options[editorUUID] + '-snippets-browser'"
+                :snippets="currentField.snippetBrowser"
+            />
         </template>
     </default-field>
 </template>
 
 <script>
 import CkEditor from '../ckeditor/ckeditor'
-import SnippetBrowser from "./snippet-browser"
-import FileBrowser from "./file-browser"
-import MediaBrowser from "./media-browser"
-import HasUUID from "./mixins/hasUUID"
+import FileBrowser from "../components/file-browser"
+import SnippetBrowser from "../components/snippet-browser/SnippetBrowser.vue"
+//import MediaBrowser from '../components/media-browser/MediaBrowser.vue'
+import HasUUID from "../components/mixins/hasUUID"
 import {DependentFormField, HandlesValidationErrors} from 'laravel-nova'
 import debounce from 'lodash/debounce'
 import RegexParser from 'regex-parser'
@@ -27,7 +41,7 @@ import RegexParser from 'regex-parser'
 export default {
     mixins: [DependentFormField, HandlesValidationErrors, HasUUID],
     props: ['resourceName', 'resourceId', 'field', 'toolbar', 'formUniqueId'],
-    components: {SnippetBrowser, MediaBrowser, FileBrowser},
+    components: {SnippetBrowser, FileBrowser},
     data() {
         return {
             mounted: false
@@ -62,11 +76,9 @@ export default {
 
             const config = {
                 attribute: this.$options[this.editorUUID],
-                imageBrowser: this.currentField.imageBrowser,
-                videoBrowser: this.currentField.videoBrowser,
-                fileBrowser: this.currentField.fileBrowser,
+                fileBrowser: true,
                 fileBrowserOptions: this.currentField.fileBrowserOptions,
-                audioBrowser: this.currentField.audioBrowser,
+                mediaBrowser: false,
                 snippetBrowser: this.currentField.snippetBrowser,
                 htmlSupport: this.normalizeHtmlSupportItems(this.currentField.htmlSupport),
                 isReadOnly: this.currentField.readonly,
@@ -82,6 +94,14 @@ export default {
                 toolbar: {
                     items: this.currentField.toolbar,
                     shouldNotGroupWhenFull: this.currentField.shouldNotGroupWhenFull
+                },
+                simpleUpload: {
+                    ...CkEditor.defaultConfig.simpleUpload,
+
+                    headers: {
+                        ...CkEditor.defaultConfig.simpleUpload.headers,
+                        'X-Toolbar':  this.currentField.toolbarName
+                    },
                 },
                 ...toolbarOptions
             }
@@ -109,6 +129,7 @@ export default {
                         this.editorResizeFix(editor, writer)
                     });
 
+                    this.syncDataOnSourceEditing()
 
                     if (this.currentField.readonly) {
                         editor.enableReadOnlyMode(this.$options[this.editorUUID]);
@@ -219,6 +240,27 @@ export default {
             }
 
             return string
+        },
+
+        syncDataOnSourceEditing() {
+            const editor = this.$options[this.editorName]
+            const sourceEditing = editor.plugins.get('SourceEditing')
+
+
+            sourceEditing.on('change:isSourceEditingMode', (_eventInfo, _name, value) => {
+                if (value) {
+                    const sourceEditingTextarea = editor.editing.view.getDomRoot()?.nextSibling?.firstChild
+
+                    if (!sourceEditingTextarea) {
+                        throw new Error('This should not be possible')
+                    }
+
+
+                    sourceEditingTextarea.addEventListener('input', debounce(() => {
+                        sourceEditing.updateEditorData()
+                    }, 500))
+                }
+            })
         },
 
         fill(formData) {

@@ -19,7 +19,7 @@ export default {
             'numberedList',
             '|',
             'insertTable',
-            'mediaBrowser',
+            'fileBrowser',
             'mediaEmbed',
             '|',
             'snippetBrowser',

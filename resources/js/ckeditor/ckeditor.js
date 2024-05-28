@@ -46,16 +46,18 @@ import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize'
 import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed'
 import HtmlEmbed from '@ckeditor/ckeditor5-html-embed/src/htmlembed'
 import ImageTextAlternative from '@ckeditor/ckeditor5-image/src/imagetextalternative'
-import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage';
+import {LinkImage} from '@ckeditor/ckeditor5-link'
+import {ImageInsert} from '@ckeditor/ckeditor5-image'
 
 // Intend
 import Indent from '@ckeditor/ckeditor5-indent/src/indent';
 import IndentBlock from '@ckeditor/ckeditor5-indent/src/indentblock';
 
+// Upload
+import {SimpleUploadAdapter} from '@ckeditor/ckeditor5-upload'
+
 // Browser
-import ImageBrowser from './plugins/ImageBrowser'
-import VideoBrowser from './plugins/VideoBrowser'
-import AudioBrowser from './plugins/AudioBrowser'
+//import MediaBrowser from './plugins/MediaBrowser'
 import SnippetBrowser from './plugins/SnippetBrowser'
 import FileBrowser from './plugins/FileBrowser'
 
@@ -86,17 +88,16 @@ export default class CkEditor extends ClassicEditorBase {
             ...require('./config/headings').default,
             ...require('./config/html').default,
             ...require('./config/video').default,
-            ...require('./config/audio').default
+            ...require('./config/audio').default,
+            ...require('./config/simple-upload').default
         }
     }
 
     // Add Plugins
     static get builtinPlugins() {
         return [
-            ImageBrowser,
-            VideoBrowser,
-            AudioBrowser,
             FileBrowser,
+            //MediaBrowser,
             SnippetBrowser,
             Video,
             Audio,
@@ -128,6 +129,8 @@ export default class CkEditor extends ClassicEditorBase {
             ImageUpload,
             ImageCaption,
             ImageResize,
+            LinkImage,
+            ImageInsert,
             ImageToolbar,
             ImageTextAlternative,
             LinkImage,
@@ -139,7 +142,8 @@ export default class CkEditor extends ClassicEditorBase {
             Indent,
             IndentBlock,
             ElementAddAttributes,
-            Clipboard
+            Clipboard,
+            SimpleUploadAdapter
         ]
     }
 }
