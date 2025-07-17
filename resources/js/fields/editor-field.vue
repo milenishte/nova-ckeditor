@@ -51,7 +51,8 @@ export default {
         editorName() {
             const attribute = this.currentField.attribute.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase())
 
-            return attribute + 'Editor' + this.formUniqueId;
+            //return attribute + 'Editor' + this.formUniqueId;
+            return attribute + 'Editor' + (Math.random() + 1).toString(36).substring(7);
         }
     },
     watch: {
